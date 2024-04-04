@@ -1,19 +1,30 @@
-import { Client } from "@planetscale/database";
-import { drizzle } from "drizzle-orm/planetscale-serverless";
+import type { NeonQueryFunction } from "@neondatabase/serverless";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 
+import { env } from "../env";
 import * as auth from "./schema/auth";
+import * as book from "./schema/book";
+import * as delivery from "./schema/delivery";
+import * as order from "./schema/order";
 import * as post from "./schema/post";
+import * as review from "./schema/review";
 
-export const schema = { ...auth, ...post };
+export const schema = {
+  ...auth,
+  ...post,
+  ...book,
+  ...review,
+  ...order,
+  ...delivery,
+};
 
-export { mySqlTable as tableCreator } from "./schema/_table";
+export { pgTable as tableCreator } from "./schema/_table";
 
 export * from "drizzle-orm";
 
-const psClient = new Client({
-  host: process.env.DB_HOST!,
-  username: process.env.DB_USERNAME!,
-  password: process.env.DB_PASSWORD!,
-});
+const pgClient: NeonQueryFunction<boolean, boolean> = neon(env.DATABASE_URL);
 
-export const db = drizzle(psClient, { schema });
+export const db = drizzle(pgClient, { schema });
+
+export * from "./types";

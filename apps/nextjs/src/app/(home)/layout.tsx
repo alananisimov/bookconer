@@ -3,17 +3,21 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 
 import { cn } from "@acme/ui";
-import { ThemeProvider, ThemeToggle } from "@acme/ui/theme";
+import { ThemeProvider } from "@acme/ui/theme";
 import { Toaster } from "@acme/ui/toast";
 
 import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
 
+import { TooltipProvider } from "@acme/ui/tooltip";
+
+import Aside from "~/app/(home)/_components/aside";
+
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.VERCEL_ENV === "production"
-      ? "https://turbo.t3.gg"
+      ? "https://bookconer.site"
       : "http://localhost:3000",
   ),
   title: "Create T3 Turbo",
@@ -21,7 +25,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Create T3 Turbo",
     description: "Simple monorepo with shared backend for web & mobile apps",
-    url: "https://create-t3-turbo.vercel.app",
+    url: "https://bookconer.site",
     siteName: "Create T3 Turbo",
   },
   twitter: {
@@ -49,11 +53,17 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <TRPCReactProvider>{props.children}</TRPCReactProvider>
-          <div className="absolute bottom-4 right-4">
-            <ThemeToggle />
-          </div>
-          <Toaster />
+          <TooltipProvider>
+            <TRPCReactProvider>
+              <div className="grid h-screen w-full pl-[53px]">
+                <Aside />
+
+                {props.children}
+              </div>
+            </TRPCReactProvider>
+
+            <Toaster />
+          </TooltipProvider>
         </ThemeProvider>
       </body>
     </html>
