@@ -8,7 +8,7 @@ createJiti(fileURLToPath(import.meta.url))("./src/env");
 const config = {
   reactStrictMode: true,
   images: {
-    domains: ["localhost", "lh3.googleusercontent.com", "files.edgestore.dev"]
+    domains: ["localhost", "lh3.googleusercontent.com", "files.edgestore.dev"],
   },
   /** Enables hot reloading for local packages without a build step */
   transpilePackages: [

@@ -18,6 +18,9 @@ export const review = pgTable("review", {
 });
 
 export const reviewRelations = relations(review, ({ one }) => ({
-    createdBy: one(users, { fields: [review.createdById], references: [users.id] }),
-    book: one(book, { fields: [review.bookId], references: [book.id] }),
+  createdBy: one(users, {
+    fields: [review.createdById],
+    references: [users.id],
+  }),
+  book: one(book, { fields: [review.bookId], references: [book.id] }),
 }));
