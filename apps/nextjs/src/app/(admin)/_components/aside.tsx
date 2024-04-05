@@ -25,7 +25,7 @@ export function Aside() {
           className="group flex h-9 w-9 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:h-8 md:w-8 md:text-base"
         >
           <Package2 className="h-4 w-4 transition-all group-hover:scale-110" />
-          <span className="sr-only">Acme Inc</span>
+          <span className="sr-only">Bookconer</span>
         </Link>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -39,10 +39,10 @@ export function Aside() {
               )}
             >
               <Home className="h-5 w-5" />
-              <span className="sr-only">Dashboard</span>
+              <span className="sr-only">Главная</span>
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right">Dashboard</TooltipContent>
+          <TooltipContent side="right">Главная</TooltipContent>
         </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -56,10 +56,10 @@ export function Aside() {
               )}
             >
               <ShoppingCart className="h-5 w-5" />
-              <span className="sr-only">Orders</span>
+              <span className="sr-only">Заказы</span>
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right">Orders</TooltipContent>
+          <TooltipContent side="right">Заказы</TooltipContent>
         </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -73,10 +73,10 @@ export function Aside() {
               )}
             >
               <Package className="h-5 w-5" />
-              <span className="sr-only">Products</span>
+              <span className="sr-only">Товары</span>
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right">Products</TooltipContent>
+          <TooltipContent side="right">Товары</TooltipContent>
         </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -85,10 +85,10 @@ export function Aside() {
               className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
             >
               <Users2 className="h-5 w-5" />
-              <span className="sr-only">Customers</span>
+              <span className="sr-only">Заказчики</span>
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right">Customers</TooltipContent>
+          <TooltipContent side="right">Заказчики</TooltipContent>
         </Tooltip>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -97,10 +97,10 @@ export function Aside() {
               className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
             >
               <LineChart className="h-5 w-5" />
-              <span className="sr-only">Analytics</span>
+              <span className="sr-only">Аналитика</span>
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right">Analytics</TooltipContent>
+          <TooltipContent side="right">Аналитика</TooltipContent>
         </Tooltip>
       </nav>
       <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-4">
@@ -111,10 +111,10 @@ export function Aside() {
               className="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8"
             >
               <Settings className="h-5 w-5" />
-              <span className="sr-only">Settings</span>
+              <span className="sr-only">Настройки</span>
             </Link>
           </TooltipTrigger>
-          <TooltipContent side="right">Settings</TooltipContent>
+          <TooltipContent side="right">Настройки</TooltipContent>
         </Tooltip>
       </nav>
     </aside>

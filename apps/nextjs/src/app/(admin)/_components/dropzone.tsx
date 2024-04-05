@@ -1,5 +1,3 @@
-"use client";
-
 import type { DropzoneOptions } from "react-dropzone";
 import * as React from "react";
 import { useState } from "react";
@@ -202,13 +200,17 @@ function formatFileSize(bytes?: number) {
 
 export { SingleImageDropzone };
 
+interface SingleImageDropzoneProps {
+  save: (url: string) => void;
+  setImageLoaded: (load: boolean) => void;
+  oldUrl?: string;
+}
+
 export function SingleImageDropzoneUsage({
   save,
   setImageLoaded,
-}: {
-  save: (url: string) => void;
-  setImageLoaded: (load: boolean) => void;
-}) {
+  oldUrl,
+}: SingleImageDropzoneProps) {
   const [file, setFile] = useState<File>();
   const { edgestore } = useEdgeStore();
 
@@ -223,6 +225,7 @@ export function SingleImageDropzoneUsage({
           if (file) {
             const res = await edgestore.publicFiles.upload({
               file,
+              options: { replaceTargetUrl: oldUrl },
             });
             console.log(res.url);
             // you can run some server action or api here

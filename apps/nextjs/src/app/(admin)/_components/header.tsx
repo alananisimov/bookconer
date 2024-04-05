@@ -55,7 +55,7 @@ export function Header({ session }: { session: Session | null }) {
               className="group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base"
             >
               <Package2 className="h-5 w-5 transition-all group-hover:scale-110" />
-              <span className="sr-only">Acme Inc</span>
+              <span className="sr-only">Bookconer</span>
             </Link>
             <Link
               href="/dashboard"
@@ -67,7 +67,7 @@ export function Header({ session }: { session: Session | null }) {
               )}
             >
               <Home className="h-5 w-5" />
-              Dashboard
+              Главная
             </Link>
             <Link
               href="/dashboard/orders"
@@ -79,7 +79,7 @@ export function Header({ session }: { session: Session | null }) {
               )}
             >
               <ShoppingCart className="h-5 w-5" />
-              Orders
+              Заказы
             </Link>
             <Link
               href="/dashboard/products"
@@ -91,21 +91,21 @@ export function Header({ session }: { session: Session | null }) {
               )}
             >
               <Package className="h-5 w-5" />
-              Products
+              Товары{" "}
             </Link>
             <Link
               href="#"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <Users2 className="h-5 w-5" />
-              Customers
+              Заказчики
             </Link>
             <Link
               href="#"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <LineChart className="h-5 w-5" />
-              Settings
+              Настройки
             </Link>
           </nav>
         </SheetContent>
@@ -154,10 +154,10 @@ export function Header({ session }: { session: Session | null }) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuLabel>Мой аккаунт</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Settings</DropdownMenuItem>
-          <DropdownMenuItem>Support</DropdownMenuItem>
+          <DropdownMenuItem>Настройки</DropdownMenuItem>
+          <DropdownMenuItem>Нужна помощь?</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
         </DropdownMenuContent>

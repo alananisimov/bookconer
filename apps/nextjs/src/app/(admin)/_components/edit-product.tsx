@@ -119,7 +119,7 @@ export function EditPage({
                   <span className="sr-only">Back</span>
                 </Button>
               </Link>
-              <h1 className="flex-1 shrink-0 whitespace-break-spaces text-xl font-semibold tracking-tight sm:grow-0">
+              <h1 className="flex-1 shrink-0 whitespace-break-spaces text-xl font-semibold tracking-tight md:grow-0 md:whitespace-nowrap">
                 {book.title}
               </h1>
               <Badge variant="outline" className="ml-auto sm:ml-0">
@@ -401,6 +401,7 @@ export function EditPage({
                               <SingleImageDropzoneUsage
                                 save={field.onChange}
                                 setImageLoaded={setImageLoaded}
+                                oldUrl={field.value}
                               />
                             </FormItem>
                           )}
