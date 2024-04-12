@@ -7,7 +7,7 @@ import { createOrderSchema } from "@acme/validators";
 import { adminProcedure, protectedProcedure } from "../trpc";
 
 export const orderRouter = {
-  getByUser: protectedProcedure.query(async ({ ctx }) => {
+  byUser: protectedProcedure.query(async ({ ctx }) => {
     return ctx.db.query.order.findMany({
       where: eq(schema.order.userId, ctx.session.user.id),
       with: {
@@ -52,7 +52,7 @@ export const orderRouter = {
         }),
       ]);
     }),
-  getLastFive: adminProcedure.query(async ({ ctx }) => {
+  lastFive: adminProcedure.query(async ({ ctx }) => {
     return ctx.db.query.order.findMany({
       with: {
         user: true,
@@ -66,7 +66,7 @@ export const orderRouter = {
       limit: 5,
     });
   }),
-  getAll: adminProcedure.query(async ({ ctx }) => {
+  all: adminProcedure.query(async ({ ctx }) => {
     const orders = await ctx.db.query.order.findMany({
       with: {
         orderedBooks: {

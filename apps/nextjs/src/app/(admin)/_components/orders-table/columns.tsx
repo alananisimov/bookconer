@@ -13,7 +13,7 @@ import { DataTableColumnHeader } from "./column-header";
 import { statuses } from "./data";
 import { DataTableRowActions } from "./row-actions";
 
-export const columns: ColumnDef<RouterOutputs["order"]["getAll"][number]>[] = [
+export const columns: ColumnDef<RouterOutputs["order"]["all"][number]>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -112,7 +112,7 @@ export const columns: ColumnDef<RouterOutputs["order"]["getAll"][number]>[] = [
       return (
         <div>
           {orderedBooks.map((orderedBook) => (
-            <span key={orderedBook.id}>{orderedBook?.book.title}</span>
+            <span key={orderedBook.id}>{orderedBook?.book?.title}</span>
           ))}
         </div>
       );

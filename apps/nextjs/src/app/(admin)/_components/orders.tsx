@@ -46,7 +46,7 @@ import {
 export function OrdersTable({
   orders,
 }: {
-  orders: RouterOutputs["order"]["getAll"];
+  orders: RouterOutputs["order"]["all"];
 }) {
   return (
     <Table>
@@ -94,7 +94,7 @@ export function OrdersTable({
 export function OrderCard({
   orders,
 }: {
-  orders: RouterOutputs["order"]["getAll"];
+  orders: RouterOutputs["order"]["all"];
 }) {
   const [currentOrder, setCurrentOrder] = useState(orders[0]);
   return (
@@ -149,11 +149,11 @@ export function OrderCard({
                 className="flex items-center justify-between"
               >
                 <span className="text-muted-foreground">
-                  {orderedBook.book.title} x{" "}
+                  {orderedBook.book?.title} x{" "}
                   <span>{orderedBook.bookQuantity}</span>
                 </span>
                 <span>
-                  {orderedBook.bookQuantity * orderedBook.book.price} RUB
+                  {orderedBook.bookQuantity * orderedBook.book?.price} RUB
                 </span>
               </li>
             ))}
