@@ -113,7 +113,7 @@ export function OrderCard({
             </Button>
           </CardTitle>
           <CardDescription>
-            Дата: {currentOrder?.updatedAt?.toLocaleDateString()}
+            Дата: {currentOrder?.updatedAt?.toLocaleDateString("ru")}
           </CardDescription>
         </div>
         <div className="ml-auto flex items-center gap-1">
@@ -214,7 +214,7 @@ export function OrderCard({
         <div className="text-xs text-muted-foreground">
           Обновлено{" "}
           <time dateTime="2023-11-23">
-            {currentOrder?.updatedAt?.toLocaleDateString()}
+            {currentOrder?.updatedAt?.toLocaleDateString("ru")}
           </time>
         </div>
         <Pagination className="ml-auto mr-0 w-auto">

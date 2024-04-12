@@ -147,7 +147,7 @@ export default async function Aside() {
         </Tooltip>
         <Tooltip delayDuration={0}>
           <UserProfileDialog session={session}>
-            <TooltipTrigger asChild suppressHydrationWarning>
+            <TooltipTrigger asChild>
               <Button
                 variant="ghost"
                 size="icon"

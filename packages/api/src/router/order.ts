@@ -2,17 +2,9 @@ import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod";
 
 import { desc, eq, schema } from "@acme/db";
+import { createOrderSchema } from "@acme/validators";
 
 import { adminProcedure, protectedProcedure } from "../trpc";
-
-const createOrderSchema = z.object({
-  books: z.array(
-    z.object({
-      bookId: z.number().positive(),
-      bookQuantity: z.number().positive(),
-    }),
-  ),
-});
 
 export const orderRouter = {
   getByUser: protectedProcedure.query(async ({ ctx }) => {
@@ -27,21 +19,38 @@ export const orderRouter = {
       },
     });
   }),
+  delete: adminProcedure
+    .input(z.object({ id: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      return ctx.db.delete(schema.order).where(eq(schema.order.id, input.id));
+    }),
   create: adminProcedure
     .input(createOrderSchema)
-    .query(async ({ ctx, input }) => {
-      return ctx.db.transaction(async (tx) => {
-        const createMainOrder = await tx
-          .insert(schema.order)
-          .values({ userId: ctx.session.user.id, status: "pending" })
-          .returning({ id: schema.order.id })
-          .then((v) => v[0]!.id);
-        return await tx.insert(schema.orderedBook).values([
-          ...input.books.map((book) => {
-            return { ...book, orderId: createMainOrder };
-          }),
-        ]);
-      });
+    .mutation(async ({ ctx, input }) => {
+      const { deliveryAddress, deliveryType } = input;
+      const createNewDelivery = await ctx.db
+        .insert(schema.delivery)
+        .values({
+          userId: ctx.session.user.id,
+          type: deliveryType,
+          location: `${deliveryAddress.lat} ${deliveryAddress.lng}`,
+        })
+        .returning({ id: schema.delivery.id })
+        .then((v) => v[0]!.id);
+      const createMainOrder = await ctx.db
+        .insert(schema.order)
+        .values({
+          userId: ctx.session.user.id,
+          status: "pending",
+          deliveryId: createNewDelivery,
+        })
+        .returning({ id: schema.order.id })
+        .then((v) => v[0]!.id);
+      return await ctx.db.insert(schema.orderedBook).values([
+        ...input.books.map((book) => {
+          return { ...book, orderId: createMainOrder };
+        }),
+      ]);
     }),
   getLastFive: adminProcedure.query(async ({ ctx }) => {
     return ctx.db.query.order.findMany({

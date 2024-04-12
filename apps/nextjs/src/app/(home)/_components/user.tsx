@@ -2,18 +2,23 @@
 
 import type { ReactNode, SVGProps } from "react";
 import { useState } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { Loader2Icon } from "lucide-react";
 import { signIn } from "next-auth/react";
 
 import type { Session } from "@acme/auth";
 import { cn } from "@acme/ui";
-import { Button, buttonVariants } from "@acme/ui/button";
+import { Button } from "@acme/ui/button";
+import {
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@acme/ui/card";
 import { Dialog, DialogContent, DialogTrigger } from "@acme/ui/dialog";
-import { Separator } from "@acme/ui/separator";
-
-import { sidebarNavItems } from "~/constants";
+import { Input } from "@acme/ui/input";
+import { Label } from "@acme/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@acme/ui/tabs";
 
 function SignInDialog({ trigger }: { trigger: ReactNode }) {
   const [signInClicked, setSignInClicked] = useState(false);
@@ -65,23 +70,58 @@ export function UserProfileDialog({
   if (!session) return <SignInDialog trigger={children} />;
   return (
     <Dialog>
-      <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent className="" suppressHydrationWarning>
-        <div className=" space-y-6 p-10 pb-16">
-          <div className="space-y-0.5">
-            <h2 className="text-xl font-bold tracking-tight">Settings</h2>
-            <p className="text-sm text-muted-foreground">
-              Manage your account settings and set e-mail preferences.
-            </p>
-          </div>
-          <Separator className="my-6" />
-          <div className="flex flex-col space-x-12 space-y-0">
-            <aside className="-mx-4 w-1/5">
-              <SidebarNav items={sidebarNavItems} />
-            </aside>
-            <div className="flex-1 lg:max-w-2xl">123</div>
-          </div>
-        </div>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className=" max-w-md items-center justify-center p-10">
+        <Tabs defaultValue="account" className="max-w-[400px]">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="account">Account</TabsTrigger>
+            <TabsTrigger value="settings">Settings</TabsTrigger>
+          </TabsList>
+          <TabsContent value="account">
+            <CardHeader>
+              <CardTitle>Account</CardTitle>
+              <CardDescription>
+                Make changes to your account here. Click save when you&apos;re
+                done.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label htmlFor="name">Name</Label>
+                <Input id="name" defaultValue="Pedro Duarte" />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="username">Username</Label>
+                <Input id="username" defaultValue="@peduarte" />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button>Save changes</Button>
+            </CardFooter>
+          </TabsContent>
+          <TabsContent value="settings">
+            <CardHeader>
+              <CardTitle>Password</CardTitle>
+              <CardDescription>
+                Change your password here. After saving, you&apos;ll be logged
+                out.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="space-y-1">
+                <Label htmlFor="current">Current password</Label>
+                <Input id="current" type="password" />
+              </div>
+              <div className="space-y-1">
+                <Label htmlFor="new">New password</Label>
+                <Input id="new" type="password" />
+              </div>
+            </CardContent>
+            <CardFooter>
+              <Button>Save password</Button>
+            </CardFooter>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
@@ -131,42 +171,5 @@ function GoogleLogo({ ...props }: { props?: SVGProps<SVGElement> }) {
         d="M50 69.8a19.8 19.8 90 1 0 0-39.6 19.8 19.8 90 0 0 0 39.6z"
       />{" "}
     </svg>
-  );
-}
-
-interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
-  items: {
-    href: string;
-    title: string;
-  }[];
-}
-
-export function SidebarNav({ className, items, ...props }: SidebarNavProps) {
-  const pathname = usePathname();
-
-  return (
-    <nav
-      className={cn(
-        "flex space-x-2 lg:flex-col lg:space-x-0 lg:space-y-1",
-        className,
-      )}
-      {...props}
-    >
-      {items.map((item) => (
-        <Link
-          key={item.href}
-          href={item.href}
-          className={cn(
-            buttonVariants({ variant: "ghost" }),
-            pathname === item.href
-              ? "bg-muted hover:bg-muted"
-              : "hover:bg-transparent hover:underline",
-            "justify-start",
-          )}
-        >
-          {item.title}
-        </Link>
-      ))}
-    </nav>
   );
 }

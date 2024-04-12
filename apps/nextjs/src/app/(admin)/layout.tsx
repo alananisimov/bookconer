@@ -25,13 +25,13 @@ export const metadata: Metadata = {
       ? "https://bookconer.site"
       : "http://localhost:3000",
   ),
-  title: "Create T3 Turbo",
-  description: "Simple monorepo with shared backend for web & mobile apps",
+  title: "Bookcorner - простой магазин книг",
+  description: "Купить вашу любимую книгу стало еще проще!",
   openGraph: {
-    title: "Create T3 Turbo",
-    description: "Simple monorepo with shared backend for web & mobile apps",
+    title: "Bookcorner - простой магазин книг",
+    description: "Купить вашу любимую книгу стало еще проще!",
     url: "https://bookconer.site",
-    siteName: "Create T3 Turbo",
+    siteName: "Bookcorner - простой магазин книг",
   },
   twitter: {
     card: "summary_large_image",
@@ -68,7 +68,7 @@ export default async function RootLayout(props: { children: React.ReactNode }) {
                 <Aside />
                 <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">
                   <Header session={session} />
-                  <div className="grid min-h-screen">
+                  <div className="min-h-screen">
                     <EdgeStoreProvider>{props.children}</EdgeStoreProvider>
                   </div>
                 </div>

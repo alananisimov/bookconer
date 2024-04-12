@@ -1,7 +1,6 @@
 import type { TRPCRouterRecord } from "@trpc/server";
 import { z } from "zod";
 
-import type { book } from "@acme/db";
 import { desc, eq, max, min, schema } from "@acme/db";
 import {
   createBookSchema,
@@ -12,8 +11,7 @@ import {
 import { adminProcedure, publicProcedure } from "../trpc";
 
 export const bookRouter = {
-  all: publicProcedure.query(({ ctx }): Promise<book[]> => {
-    // return ctx.db.select().from(schema.post).orderBy(desc(schema.post.id));
+  all: publicProcedure.query(({ ctx }) => {
     return ctx.db.query.book.findMany({
       orderBy: desc(schema.book.id),
       limit: 10,
@@ -21,7 +19,7 @@ export const bookRouter = {
   }),
   byId: publicProcedure
     .input(z.object({ id: z.number() }))
-    .query(({ ctx, input }): Promise<book | undefined> => {
+    .query(({ ctx, input }) => {
       return ctx.db.query.book.findFirst({
         where: eq(schema.book.id, input.id),
       });
@@ -71,6 +69,6 @@ export const bookRouter = {
     const maximum = await ctx.db
       .select({ values: max(schema.book.price) })
       .from(schema.book);
-    return [minimum[0]?.values ?? 0, maximum[0]?.values ?? 0];
+    return { min: minimum[0]?.values ?? 0, max: maximum[0]?.values ?? 0 };
   }),
 } satisfies TRPCRouterRecord;

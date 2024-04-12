@@ -11,6 +11,7 @@ import {
   Turtle,
 } from "lucide-react";
 
+import type { RouterOutputs } from "@acme/api";
 import { cn } from "@acme/ui";
 import { Button } from "@acme/ui/button";
 import {
@@ -31,9 +32,11 @@ import {
   SelectValue,
 } from "@acme/ui/select";
 
-import { api } from "~/trpc/react";
-
-export function FilterDrawer() {
+export function FilterDrawer({
+  minAndMax,
+}: {
+  minAndMax: RouterOutputs["book"]["minAndMaxPrice"];
+}) {
   return (
     <Drawer>
       <DrawerTrigger asChild>
@@ -49,19 +52,23 @@ export function FilterDrawer() {
             Настройте сортировку книг в выдаче
           </DrawerDescription>
         </DrawerHeader>
-        <form className="grid w-full items-start gap-6 overflow-auto p-4 pt-0">
-          <FilterList />
-        </form>
+        <div className="grid w-full items-start gap-6 overflow-auto p-4 pt-0">
+          <FilterList minAndMax={minAndMax} />
+        </div>
       </DrawerContent>
     </Drawer>
   );
 }
 
-export default function FilterSidebar() {
+export default function FilterSidebar({
+  minAndMax,
+}: {
+  minAndMax: RouterOutputs["book"]["minAndMaxPrice"];
+}) {
   return (
     <div className="relative col-span-1 hidden flex-col items-start gap-8 md:flex">
       <form className="grid items-start gap-6">
-        <FilterList />
+        <FilterList minAndMax={minAndMax} />
       </form>
     </div>
   );
@@ -88,10 +95,12 @@ function StarRating({
   );
 }
 
-export function FilterList() {
-  const { data: minAndMax } = api.book.minAndMaxPrice.useQuery();
-  const min = minAndMax ? minAndMax[0] : 0;
-  const max = minAndMax ? minAndMax[1] : 0;
+export function FilterList({
+  minAndMax,
+}: {
+  minAndMax: RouterOutputs["book"]["minAndMaxPrice"];
+}) {
+  const { min, max } = minAndMax;
   return (
     <>
       <fieldset className="grid gap-6 rounded-lg border p-4">
@@ -156,7 +165,7 @@ export function FilterList() {
               </SelectItem>
             </SelectContent>
           </Select>
-          <div></div>
+
           <Label htmlFor="top-p">Цена</Label>
           <div className="grid grid-cols-2 gap-3">
             <div className="grid gap-3">
@@ -206,12 +215,12 @@ export function FilterList() {
         </div>
         <div className="grid gap-3">
           <Label htmlFor="role">Тип доставки</Label>
-          <Select defaultValue="courier-avito">
+          <Select defaultValue="avito">
             <SelectTrigger className="[&_[data-description]]:hidden [&_[data-details]]:hidden">
               <SelectValue placeholder="Выберите ваш тип доставки" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="courier-avito">
+              <SelectItem value="avito">
                 <div className="flex items-start gap-3 text-muted-foreground">
                   <Truck className="size-5" />
                   <div className="grid gap-0.5">

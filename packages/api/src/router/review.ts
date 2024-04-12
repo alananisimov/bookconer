@@ -24,45 +24,43 @@ export const reviewRouter = {
   create: protectedProcedure
     .input(createReviewSchema)
     .mutation(async ({ ctx, input }) => {
-      return ctx.db.transaction(async (tx) => {
-        // Проверка наличия существующего отзыва от пользователя
-        const existingReview = await tx.query.review.findFirst({
-          where: and(
-            eq(schema.review.bookId, input.bookId),
-            eq(schema.review.createdById, ctx.session.user.id),
-          ),
-        });
-
-        if (existingReview) {
-          throw new TRPCError({
-            code: "FORBIDDEN",
-            message: "You have already reviewed this book",
-          });
-        }
-        // Проверка наличия книги в заказах пользователя
-        const userOrderedBooks = await tx.query.order.findMany({
-          where: eq(schema.order.userId, ctx.session.user.id),
-          columns: {},
-          with: {
-            orderedBooks: {
-              where: eq(schema.orderedBook.bookId, input.bookId),
-            },
-          },
-        });
-        const haveOrdered = userOrderedBooks.some(
-          (order) => order.orderedBooks.length !== 0,
-        );
-        if (!haveOrdered) {
-          throw new TRPCError({
-            code: "UNAUTHORIZED",
-            message: "You haven't buyed this book",
-          });
-        }
-        // Создание нового отзыва
-        return await tx
-          .insert(schema.review)
-          .values({ ...input, createdById: ctx.session.user.id });
+      // Проверка наличия существующего отзыва от пользователя
+      const existingReview = await ctx.db.query.review.findFirst({
+        where: and(
+          eq(schema.review.bookId, input.bookId),
+          eq(schema.review.createdById, ctx.session.user.id),
+        ),
       });
+
+      if (existingReview) {
+        throw new TRPCError({
+          code: "FORBIDDEN",
+          message: "You have already reviewed this book",
+        });
+      }
+      // Проверка наличия книги в заказах пользователя
+      const userOrderedBooks = await ctx.db.query.order.findMany({
+        where: eq(schema.order.userId, ctx.session.user.id),
+        columns: {},
+        with: {
+          orderedBooks: {
+            where: eq(schema.orderedBook.bookId, input.bookId),
+          },
+        },
+      });
+      const haveOrdered = userOrderedBooks.some(
+        (order) => order.orderedBooks.length !== 0,
+      );
+      if (!haveOrdered) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "You haven't buyed this book",
+        });
+      }
+      // Создание нового отзыва
+      return await ctx.db
+        .insert(schema.review)
+        .values({ ...input, createdById: ctx.session.user.id });
     }),
   // Метод для удаления отзыва
   delete: protectedProcedure

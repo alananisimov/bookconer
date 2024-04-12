@@ -6,7 +6,7 @@ import { api } from "~/utils/api";
 export default function Post() {
   const { id } = useGlobalSearchParams();
   if (!id || typeof id !== "string") throw new Error("unreachable");
-  const { data } = api.post.byId.useQuery({ id: parseInt(id) });
+  const { data } = api.book.byId.useQuery({ id: parseInt(id) });
 
   if (!data) return null;
 
@@ -17,7 +17,7 @@ export default function Post() {
         <Text className="py-2 text-3xl font-bold text-primary">
           {data.title}
         </Text>
-        <Text className="py-4 text-foreground">{data.content}</Text>
+        <Text className="py-4 text-foreground">{data.description}</Text>
       </View>
     </SafeAreaView>
   );

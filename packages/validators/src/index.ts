@@ -1,13 +1,5 @@
 import { z } from "zod";
 
-export const createOrderSchema = z.object({
-  books: z.array(
-    z.object({
-      bookId: z.number().positive(),
-      bookQuantity: z.number().positive(),
-    }),
-  ),
-});
 export const CreatePostSchema = z.object({
   title: z.string().min(1),
   content: z.string().min(1),
@@ -43,4 +35,15 @@ export const deleteReviewSchema = z.object({
 export const updateReviewSchema = createBookSchema.extend({
   id: z.number().min(1),
   createdById: z.string().min(1),
+});
+
+export const createOrderSchema = z.object({
+  deliveryType: z.enum(["avito", "pr", "self"]),
+  deliveryAddress: z.object({ lat: z.number(), lng: z.number() }),
+  books: z.array(
+    z.object({
+      bookId: z.number().positive(),
+      bookQuantity: z.number().positive(),
+    }),
+  ),
 });

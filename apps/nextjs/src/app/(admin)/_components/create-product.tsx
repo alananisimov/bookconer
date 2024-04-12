@@ -44,13 +44,12 @@ import { api } from "~/trpc/react";
 import { CreateNewAuthorDialog, CreateNewGenreDialog } from "./dialogs";
 import { SingleImageDropzoneUsage } from "./dropzone";
 
-export function ProductEditForm({
-  authors,
-  genres,
-}: {
+interface ProductEditFormProps {
   authors: RouterOutputs["book"]["allAuthors"];
   genres: RouterOutputs["book"]["allGenres"];
-}) {
+}
+
+export function EditProduct({ authors, genres }: ProductEditFormProps) {
   const form = useForm<z.infer<typeof createBookSchema>>({
     resolver: zodResolver(createBookSchema),
   });

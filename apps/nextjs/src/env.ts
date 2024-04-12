@@ -24,13 +24,14 @@ export const env = createEnv({
    */
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: z.string(),
   },
   /**
    * Destructure all variables from `process.env` to make sure they aren't tree-shaken away.
    */
   experimental__runtimeEnv: {
     NODE_ENV: process.env.NODE_ENV,
-
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: "AIzaSyBKIb5BgQOInryoJMo4a10AdsqFhynnpKE",
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   skipValidation:

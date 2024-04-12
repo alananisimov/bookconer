@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Copy, MoreHorizontal } from "lucide-react";
 
-import type { book } from "@acme/db";
+import type { RouterOutputs } from "@acme/api";
 import { Badge } from "@acme/ui/badge";
 import { Button } from "@acme/ui/button";
 import {
@@ -34,7 +34,11 @@ import { toast } from "@acme/ui/toast";
 
 import { DeleteBookDialog } from "./dialogs";
 
-export function ProductsTable({ products }: { products: book[] }) {
+export function ProductsTable({
+  products,
+}: {
+  products: RouterOutputs["book"]["all"];
+}) {
   return (
     <Card>
       <CardHeader>

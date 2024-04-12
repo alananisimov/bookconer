@@ -26,6 +26,8 @@ import {
   TableRow,
 } from "@acme/ui/table";
 
+export const runtime = "edge";
+
 export default async function Dashboard() {
   return (
     <div className="flex min-h-screen w-full flex-col">

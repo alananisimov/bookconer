@@ -20,13 +20,13 @@ export const metadata: Metadata = {
       ? "https://bookconer.site"
       : "http://localhost:3000",
   ),
-  title: "Create T3 Turbo",
-  description: "Simple monorepo with shared backend for web & mobile apps",
+  title: "Bookcorner - простой магазин книг",
+  description: "Купить вашу любимую книгу стало еще проще!",
   openGraph: {
-    title: "Create T3 Turbo",
-    description: "Simple monorepo with shared backend for web & mobile apps",
+    title: "Bookcorner - простой магазин книг",
+    description: "Купить вашу любимую книгу стало еще проще!",
     url: "https://bookconer.site",
-    siteName: "Create T3 Turbo",
+    siteName: "Bookcorner - простой магазин книг",
   },
   twitter: {
     card: "summary_large_image",
@@ -57,7 +57,6 @@ export default function RootLayout(props: { children: React.ReactNode }) {
             <TRPCReactProvider>
               <div className="grid h-screen w-full pl-[53px]">
                 <Aside />
-
                 {props.children}
               </div>
             </TRPCReactProvider>

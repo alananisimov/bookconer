@@ -7,7 +7,9 @@ import type { review } from "./schema/review";
 
 export type book = InferSelectModel<typeof book>;
 export type review = InferSelectModel<typeof review>;
-export type order = InferSelectModel<typeof order>;
+export type order = InferSelectModel<typeof order> & {
+  orderedBooks: orderedBook[];
+};
 export type orderedBook = InferSelectModel<typeof orderedBook> & {
   book: book;
   order: order;

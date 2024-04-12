@@ -1,179 +1,18 @@
 "use client";
 
-import type { z } from "zod";
 import { use, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Heart, HeartOff, Plus } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { Heart, HeartOff } from "lucide-react";
 
 import type { RouterOutputs } from "@acme/api";
 import { Button } from "@acme/ui/button";
 import { Card, CardContent } from "@acme/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@acme/ui/form";
-import { Input } from "@acme/ui/input";
 import { Skeleton } from "@acme/ui/skeleton";
 import { toast } from "@acme/ui/toast";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@acme/ui/tooltip";
-import { createBookSchema } from "@acme/validators";
 
 import { api } from "~/trpc/react";
-import { ResponsiveSheet } from "./responsive-dialog";
-
-export function CreateBookDrawer() {
-  return (
-    <ResponsiveSheet
-      title="Создать книгу"
-      description=" Configure the settings for the model and messages."
-      trigger={
-        <Button variant="ghost" size="icon">
-          <Plus className="size-4" />
-          <span className="sr-only">Создать книгу</span>
-        </Button>
-      }
-    >
-      <div className="grid w-full items-start gap-6 overflow-auto p-2 pt-2 md:pt-4">
-        <div className="grid gap-3">
-          <CreateBookForm />
-        </div>
-      </div>
-    </ResponsiveSheet>
-  );
-}
-
-export function CreateBookForm() {
-  const form = useForm<z.infer<typeof createBookSchema>>({
-    resolver: zodResolver(createBookSchema),
-    defaultValues: {
-      title: "123",
-      description: "123",
-      amount: 1,
-      author: "123",
-      imageLink: "http://localhost:3000/book.webp",
-      genre: "123",
-      price: 1488,
-    },
-  });
-
-  const utils = api.useUtils();
-  const createBook = api.book.create.useMutation({
-    onSuccess: async () => {
-      form.reset();
-      await utils.book.invalidate();
-    },
-    onError: (err) => {
-      toast.error(
-        err?.data?.code === "UNAUTHORIZED"
-          ? "You must be logged in to post"
-          : "Failed to create post",
-      );
-    },
-  });
-
-  return (
-    <Form {...form}>
-      <form
-        className="flex w-full max-w-2xl flex-col gap-4"
-        onSubmit={form.handleSubmit(async (data) => {
-          createBook.mutate(data);
-        })}
-      >
-        <FormField
-          control={form.control}
-          name="title"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input {...field} placeholder="Title" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input {...field} placeholder="Description" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="amount"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input {...field} placeholder="Amount" type="number" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input {...field} placeholder="Price" type="number" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="imageLink"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input {...field} placeholder="Image link" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="genre"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input {...field} placeholder="Genre" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="author"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input {...field} placeholder="Author" />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Create</Button>
-      </form>
-    </Form>
-  );
-}
 
 export function BooksList(props: {
   books: Promise<RouterOutputs["book"]["all"]>;

@@ -37,8 +37,28 @@ import {
 import { Input } from "@acme/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@acme/ui/sheet";
 
+import { capitalize } from "~/lib";
+
+interface Breadcrumb {
+  url: string;
+  label: string;
+}
+
+function getBreadcrumbs(pathname: string): Breadcrumb[] {
+  const breadcrumbs: Breadcrumb[] = [];
+  const parts = pathname.split("/").filter((part) => part !== "");
+
+  parts.forEach((part, index) => {
+    const url = `/${parts.slice(0, index + 1).join("/")}`;
+    breadcrumbs.push({ url, label: capitalize(part) });
+  });
+
+  return breadcrumbs;
+}
+
 export function Header({ session }: { session: Session | null }) {
-  const router = usePathname();
+  const path = usePathname();
+  const breadcrumbs = getBreadcrumbs(path);
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
       <Sheet>
@@ -61,7 +81,7 @@ export function Header({ session }: { session: Session | null }) {
               href="/dashboard"
               className={cn(
                 "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground",
-                router === "/dashboard"
+                path === "/dashboard"
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground",
               )}
@@ -73,7 +93,7 @@ export function Header({ session }: { session: Session | null }) {
               href="/dashboard/orders"
               className={cn(
                 "flex items-center gap-4 px-2.5 text-foreground",
-                router === "/dashboard/orders"
+                path === "/dashboard/orders"
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground",
               )}
@@ -85,7 +105,7 @@ export function Header({ session }: { session: Session | null }) {
               href="/dashboard/products"
               className={cn(
                 "flex items-center gap-4 px-2.5 text-foreground",
-                router === "/dashboard/orders"
+                path === "/dashboard/products"
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground",
               )}
@@ -105,28 +125,27 @@ export function Header({ session }: { session: Session | null }) {
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
               <LineChart className="h-5 w-5" />
-              Настройки
+              Аналитика
             </Link>
           </nav>
         </SheetContent>
       </Sheet>
       <Breadcrumb className="hidden md:flex">
         <BreadcrumbList>
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="#">Dashboard</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink asChild>
-              <Link href="#">Orders</Link>
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbPage>Recent Orders</BreadcrumbPage>
-          </BreadcrumbItem>
+          {breadcrumbs.map((breadcrumb, index) => (
+            <div key={index} className="flex flex-row items-center gap-x-2">
+              <BreadcrumbItem>
+                {index !== breadcrumbs.length - 1 ? (
+                  <BreadcrumbLink asChild>
+                    <Link href={breadcrumb.url}>{breadcrumb.label}</Link>
+                  </BreadcrumbLink>
+                ) : (
+                  <BreadcrumbPage>{breadcrumb.label}</BreadcrumbPage>
+                )}
+              </BreadcrumbItem>
+              {index !== breadcrumbs.length - 1 && <BreadcrumbSeparator />}
+            </div>
+          ))}
         </BreadcrumbList>
       </Breadcrumb>
       <div className="relative ml-auto flex-1 md:grow-0">

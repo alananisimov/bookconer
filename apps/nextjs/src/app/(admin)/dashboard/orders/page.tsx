@@ -1,6 +1,4 @@
-"use server";
-
-import { File, ListFilter } from "lucide-react";
+import Link from "next/link";
 
 import { Button } from "@acme/ui/button";
 import {
@@ -11,19 +9,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@acme/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@acme/ui/dropdown-menu";
 import { Progress } from "@acme/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@acme/ui/tabs";
 
 import { api } from "~/trpc/server";
-import { OrderCard, OrdersTable } from "../../_components/orders";
+import { OrderCard } from "../../_components/orders";
+import { columns } from "../../_components/orders-table/columns";
+import { DataTable } from "../../_components/orders-table/data-table";
+
+export const runtime = "edge";
 
 export default async function Dashboard() {
   const orders = await api.order.getAll();
@@ -33,19 +26,22 @@ export default async function Dashboard() {
         <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
           <Card className="sm:col-span-2">
             <CardHeader className="pb-3">
-              <CardTitle>Your Orders</CardTitle>
+              <CardTitle>Ваши заказы</CardTitle>
               <CardDescription className="max-w-lg text-balance leading-relaxed">
-                Introducing Our Dynamic Orders Dashboard for Seamless Management
-                and Insightful Analysis.
+                Тут вы можете удобно создавать, изменять и просматривать заказы,
+                созданные на вашем сайте.
               </CardDescription>
             </CardHeader>
             <CardFooter>
-              <Button>Create New Order</Button>
+              <Link href={"/dashboard/orders/create"}>
+                <Button>Создать тестовый заказ</Button>
+              </Link>
             </CardFooter>
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>This Week</CardDescription>
+              <CardDescription>Эта неделя</CardDescription>
+              {/* TODO: count summarized revenue for 1 week */}
               <CardTitle className="text-4xl">$1329</CardTitle>
             </CardHeader>
             <CardContent>
@@ -59,7 +55,7 @@ export default async function Dashboard() {
           </Card>
           <Card>
             <CardHeader className="pb-2">
-              <CardDescription>This Month</CardDescription>
+              <CardDescription>Этот месяц</CardDescription>
               <CardTitle className="text-3xl">$5,329</CardTitle>
             </CardHeader>
             <CardContent>
@@ -72,55 +68,18 @@ export default async function Dashboard() {
             </CardFooter>
           </Card>
         </div>
-        <Tabs defaultValue="week">
-          <div className="flex items-center">
-            <TabsList>
-              <TabsTrigger value="week">Week</TabsTrigger>
-              <TabsTrigger value="month">Month</TabsTrigger>
-              <TabsTrigger value="year">Year</TabsTrigger>
-            </TabsList>
-            <div className="ml-auto flex items-center gap-2">
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="h-7 gap-1 text-sm"
-                  >
-                    <ListFilter className="h-3.5 w-3.5" />
-                    <span className="sr-only sm:not-sr-only">Filter</span>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end">
-                  <DropdownMenuLabel>Filter by</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuCheckboxItem checked>
-                    Fulfilled
-                  </DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>Declined</DropdownMenuCheckboxItem>
-                  <DropdownMenuCheckboxItem>Refunded</DropdownMenuCheckboxItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Button size="sm" variant="outline" className="h-7 gap-1 text-sm">
-                <File className="h-3.5 w-3.5" />
-                <span className="sr-only sm:not-sr-only">Export</span>
-              </Button>
-            </div>
-          </div>
-          <TabsContent value="week">
-            <Card>
-              <CardHeader className="px-7">
-                <CardTitle>Orders</CardTitle>
-                <CardDescription>
-                  Recent orders from your store.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <OrdersTable orders={orders} />
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
+
+        <Card>
+          <CardHeader className="px-7">
+            <CardTitle>Заказы</CardTitle>
+            <CardDescription>
+              Последние заказы из вашего магазина
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="w-[calc(100vw-36px)] sm:w-[calc(100vw-96px)]  lg:w-auto">
+            <DataTable data={orders} columns={columns} />
+          </CardContent>
+        </Card>
       </div>
       <div>
         <OrderCard orders={orders} />
