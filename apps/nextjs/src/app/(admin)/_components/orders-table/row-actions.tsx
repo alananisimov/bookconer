@@ -16,7 +16,7 @@ import {
 import { DeleteOrderDialog } from "../dialogs";
 
 interface DataTableRowActionsProps {
-  row: Row<RouterOutputs["order"]["getAll"][number]>;
+  row: Row<RouterOutputs["order"]["all"][number]>;
 }
 
 export function DataTableRowActions({ row: row }: DataTableRowActionsProps) {
