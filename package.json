@@ -21,7 +21,8 @@
     "typecheck": "turbo typecheck",
     "test:e2e": "pnpm -F nextjs-e2e test",
     "test:unit": "vitest run",
-    "test": "turbo test --parallel"
+    "test": "turbo test --parallel",
+    "start:web": "pnpm -F nextjs start"
   },
   "devDependencies": {
     "@acme/prettier-config": "workspace:*",
