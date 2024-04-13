@@ -85,16 +85,17 @@ export function CreateOrderPage({
   const router = useRouter();
   const createBook = api.order.create.useMutation({
     onSuccess: async () => {
-      toast.success("Заказ успешно создан!");
+      form.reset();
       await utils.book.all.invalidate();
+      toast.success("Заказ успешно создан!");
       router.push("/dashboard/orders");
-      router.refresh();
     },
     onError: (err) => {
       toast.error(
         err?.data?.code === "UNAUTHORIZED"
           ? "You must be an admin in to create a book"
           : "Не удалось создать книгу",
+        { description: err.message },
       );
     },
   });

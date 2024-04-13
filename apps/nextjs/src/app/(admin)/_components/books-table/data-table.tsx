@@ -33,14 +33,14 @@ import { api } from "~/trpc/react";
 import { DataTablePagination } from "./pagination";
 import { DataTableToolbar } from "./toolbar";
 
-interface OrdersTableProps {
-  columns: ColumnDef<RouterOutputs["order"]["all"][number]>[];
-  orders: Promise<RouterOutputs["order"]["all"]>;
+interface ProductsTableProps {
+  columns: ColumnDef<RouterOutputs["book"]["all"][number]>[];
+  orders: Promise<RouterOutputs["book"]["all"]>;
 }
 
-export function OrdersTable({ columns, orders }: OrdersTableProps) {
+export function ProductsTable({ columns, orders }: ProductsTableProps) {
   const initialData = use(orders ?? []);
-  const { data } = api.order.all.useQuery(undefined, { initialData });
+  const { data } = api.book.all.useQuery(undefined, { initialData });
   const [rowSelection, setRowSelection] = React.useState({});
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});

@@ -8,7 +8,7 @@ import { Button } from "@acme/ui/button";
 export default function Header() {
   const path = usePathname();
   return (
-    <header className="sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b bg-background px-4">
+    <header className="sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b bg-background px-6">
       <h2 className="text-xl font-semibold">Главная</h2>
 
       <Button

@@ -1,5 +1,5 @@
 import { relations, sql } from "drizzle-orm";
-import { serial, timestamp, varchar } from "drizzle-orm/pg-core";
+import { integer, serial, timestamp, varchar } from "drizzle-orm/pg-core";
 
 import { pgTable } from "./_table";
 import { users } from "./auth";
@@ -11,7 +11,9 @@ export const delivery = pgTable("delivery", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
   location: varchar("location", { length: 512 }).notNull(),
-  orderId: serial("orderId").notNull(),
+  orderId: integer("orderId")
+    .notNull()
+    .references(() => order.id, { onDelete: "cascade" }),
   type: varchar("type", { length: 255 })
     .$type<"avito" | "pr" | "self">()
     .notNull(),

@@ -3,7 +3,6 @@
 import type { Table } from "@tanstack/react-table";
 import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu";
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import { FilterIcon } from "lucide-react";
 
 import { Button } from "@acme/ui/button";
 import {
@@ -27,14 +26,7 @@ export function DataTableViewOptions<TData>({
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div>
-          <Button size={"sm"} variant={"outline"} className="lg:hidden">
-            <FilterIcon className="size-4" />
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            className="ml-auto hidden h-8 lg:flex"
-          >
+          <Button variant="outline" size="sm" className="ml-auto flex h-8">
             <MixerHorizontalIcon className="mr-2 h-4 w-4" />
             Видимость
           </Button>

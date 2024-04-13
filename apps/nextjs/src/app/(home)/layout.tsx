@@ -13,10 +13,11 @@ import "~/app/globals.css";
 import { TooltipProvider } from "@acme/ui/tooltip";
 
 import Aside from "~/app/(home)/_components/aside";
+import BottomBar from "./_components/bottom-bar";
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.VERCEL_ENV === "production"
+    process.env.NODE_ENV === "production"
       ? "https://bookconer.site"
       : "http://localhost:3000",
   ),
@@ -55,9 +56,10 @@ export default function RootLayout(props: { children: React.ReactNode }) {
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <TooltipProvider>
             <TRPCReactProvider>
-              <div className="grid h-screen w-full pl-[53px]">
+              <div className="grid h-screen w-full sm:pl-[53px]">
                 <Aside />
                 {props.children}
+                <BottomBar />
               </div>
             </TRPCReactProvider>
 

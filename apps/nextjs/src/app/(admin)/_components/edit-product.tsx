@@ -6,11 +6,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import type { RouterOutputs } from "@acme/api";
 import type { book } from "@acme/db";
+import { cn } from "@acme/ui";
 import { Badge } from "@acme/ui/badge";
 import { Button } from "@acme/ui/button";
 import {
@@ -78,6 +79,7 @@ export function EditPage({ authors, genres, book }: EditPageProps) {
         err?.data?.code === "UNAUTHORIZED"
           ? "You must be an admin in to create a book"
           : "Не удалось обновить книгу",
+        { description: err.message },
       );
     },
   });
@@ -96,7 +98,7 @@ export function EditPage({ authors, genres, book }: EditPageProps) {
   const addGenreToList = (newGenre: string) => {
     setAllGenres([...allGenres, { genre: newGenre }]);
   };
-  const [_imageLoaded, setImageLoaded] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   return (
     <Form {...form}>
       <form
@@ -104,7 +106,7 @@ export function EditPage({ authors, genres, book }: EditPageProps) {
         className="max-w-full space-y-8"
       >
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-          <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
+          <div className="mx-auto grid flex-1 auto-rows-max gap-4 sm:max-w-[59rem]">
             <div className="flex items-center gap-4">
               <Link href={"/dashboard/products"}>
                 <Button
@@ -381,10 +383,18 @@ export function EditPage({ authors, genres, book }: EditPageProps) {
                   </CardHeader>
                   <CardContent>
                     <div className="grid gap-2">
-                      <div className="rounded-md bg-muted p-4">
+                      <div className="relative flex rounded-md bg-muted p-4">
+                        <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transform">
+                          {imageLoaded && (
+                            <Loader className="size-5 animate-spin" />
+                          )}
+                        </div>
                         <Image
                           alt="Product image"
-                          className="aspect-square h-full w-full rounded-md object-contain"
+                          className={cn(
+                            "aspect-square h-full w-full rounded-md object-contain",
+                            imageLoaded && " brightness-50",
+                          )}
                           height="300"
                           src={form.getValues("imageLink")}
                           width="300"
@@ -417,7 +427,7 @@ export function EditPage({ authors, genres, book }: EditPageProps) {
               <Button
                 size="sm"
                 onClick={() => form.handleSubmit(onSubmit)}
-                type="button"
+                type="submit"
               >
                 Сохранить
               </Button>

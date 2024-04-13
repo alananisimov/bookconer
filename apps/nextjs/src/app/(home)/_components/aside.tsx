@@ -13,7 +13,7 @@ export default async function Aside() {
   const session = await auth();
   return (
     <aside
-      className="inset-y fixed  left-0 z-20 flex h-full flex-col border-r"
+      className="inset-y fixed left-0  z-20 hidden h-full flex-col border-r sm:flex"
       suppressHydrationWarning
     >
       <div className="border-b p-2">

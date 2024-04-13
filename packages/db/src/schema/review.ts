@@ -9,7 +9,9 @@ export const review = pgTable("review", {
   id: serial("id").primaryKey(),
   content: varchar("content", { length: 512 }).notNull(),
   rating: integer("rating").notNull(),
-  bookId: serial("bookId").notNull(),
+  bookId: serial("bookId")
+    .notNull()
+    .references(() => book.id, { onDelete: "cascade" }),
   createdById: varchar("createdById", { length: 255 }).notNull(),
   createdAt: timestamp("created_at")
     .default(sql`CURRENT_TIMESTAMP`)

@@ -57,15 +57,17 @@ export function EditProduct({ authors, genres }: ProductEditFormProps) {
   const router = useRouter();
   const createBook = api.book.create.useMutation({
     onSuccess: async () => {
-      router.push("/dashboard/products");
+      form.reset();
+      router.replace("/dashboard/products");
       toast.success("Книга успешно создана!");
-      await utils.book.all.invalidate();
+      await utils.book.invalidate();
     },
     onError: (err) => {
       toast.error(
         err?.data?.code === "UNAUTHORIZED"
           ? "You must be an admin in to create a book"
           : "Не удалось создать книгу",
+        { description: err.message },
       );
     },
   });
@@ -410,7 +412,7 @@ export function EditProduct({ authors, genres }: ProductEditFormProps) {
               <Button
                 size="sm"
                 onClick={() => form.handleSubmit(onSubmit)}
-                type="button"
+                type="submit"
               >
                 Сохранить
               </Button>

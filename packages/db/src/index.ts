@@ -7,12 +7,10 @@ import * as auth from "./schema/auth";
 import * as book from "./schema/book";
 import * as delivery from "./schema/delivery";
 import * as order from "./schema/order";
-import * as post from "./schema/post";
 import * as review from "./schema/review";
 
 export const schema = {
   ...auth,
-  ...post,
   ...book,
   ...review,
   ...order,

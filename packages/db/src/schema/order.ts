@@ -8,8 +8,10 @@ import { delivery } from "./delivery";
 
 export const order = pgTable("order", {
   id: serial("id").primaryKey(),
-  deliveryId: serial("deliveryId").notNull(),
-  userId: varchar("userId", { length: 255 }).notNull(),
+  deliveryId: integer("deliveryId"),
+  userId: varchar("userId", { length: 255 })
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
   status: varchar("status", { length: 255 })
     .$type<"succeeded" | "pending" | "failed">()
     .notNull(),
@@ -30,9 +32,13 @@ export const orderRelations = relations(order, ({ one, many }) => ({
 
 export const orderedBook = pgTable("orderedBook", {
   id: serial("id").primaryKey(),
-  bookId: serial("bookId").notNull(),
+  bookId: serial("bookId")
+    .notNull()
+    .references(() => book.id, { onDelete: "cascade" }),
   bookQuantity: integer("bookQuantity").notNull(),
-  orderId: serial("orderId").notNull(),
+  orderId: serial("orderId")
+    .notNull()
+    .references(() => order.id, { onDelete: "cascade" }),
 });
 
 export const orderedBookRelations = relations(orderedBook, ({ one }) => ({

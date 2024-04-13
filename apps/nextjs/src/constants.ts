@@ -1,22 +1,14 @@
-export const sidebarNavItems = [
+export const roles = [
   {
-    title: "Profile",
-    href: "/examples/forms",
+    label: "Юзер",
+    value: "user",
   },
   {
-    title: "Account",
-    href: "/examples/forms/account",
+    label: "Модератор",
+    value: "moderator",
   },
   {
-    title: "Appearance",
-    href: "/examples/forms/appearance",
+    label: "Админ",
+    value: "admin",
   },
-  {
-    title: "Notifications",
-    href: "/examples/forms/notifications",
-  },
-  {
-    title: "Display",
-    href: "/examples/forms/display",
-  },
-];
+] as const;

@@ -14,12 +14,12 @@ import { Progress } from "@acme/ui/progress";
 import { api } from "~/trpc/server";
 import { OrderCard } from "../../_components/orders";
 import { columns } from "../../_components/orders-table/columns";
-import { DataTable } from "../../_components/orders-table/data-table";
+import { OrdersTable } from "../../_components/orders-table/data-table";
 
 export const runtime = "edge";
 
 export default async function Dashboard() {
-  const orders = await api.order.all();
+  const orders = api.order.all();
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8 lg:grid-cols-3 xl:grid-cols-3">
       <div className="grid auto-rows-max items-start gap-4 md:gap-8 lg:col-span-2">
@@ -76,13 +76,13 @@ export default async function Dashboard() {
               Последние заказы из вашего магазина
             </CardDescription>
           </CardHeader>
-          <CardContent className="w-[calc(100vw-36px)] sm:w-[calc(100vw-96px)]  lg:w-auto">
-            <DataTable data={orders} columns={columns} />
+          <CardContent className="w-[calc(100vw-36px)] sm:w-[calc(100vw-96px)] lg:w-auto">
+            <OrdersTable orders={orders} columns={columns} />
           </CardContent>
         </Card>
       </div>
       <div>
-        <OrderCard orders={orders} />
+        <OrderCard data={orders} />
       </div>
     </main>
   );

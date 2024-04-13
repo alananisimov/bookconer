@@ -4,16 +4,17 @@
 "use client";
 
 import type { ColumnDef } from "@tanstack/react-table";
+import Image from "next/image";
 
 import type { RouterOutputs } from "@acme/api";
-import type { orderedBook, user } from "@acme/db";
+import { Badge } from "@acme/ui/badge";
 import { Checkbox } from "@acme/ui/checkbox";
 
 import { DataTableColumnHeader } from "./column-header";
 import { statuses } from "./data";
 import { DataTableRowActions } from "./row-actions";
 
-export const columns: ColumnDef<RouterOutputs["order"]["all"][number]>[] = [
+export const columns: ColumnDef<RouterOutputs["book"]["all"][number]>[] = [
   {
     id: "select",
     header: ({ table }) => (
@@ -39,27 +40,55 @@ export const columns: ColumnDef<RouterOutputs["order"]["all"][number]>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "user",
+    accessorKey: "imageLink",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Клиент" />
+      <DataTableColumnHeader column={column} title="Изображение" />
     ),
-    cell: ({ row }) => {
-      const user: user = row.getValue("user");
-      return <div className="">{user?.email}</div>;
-    },
+    cell: ({ row }) => (
+      <div className="w-12">
+        <Image
+          src={row.getValue("imageLink")}
+          alt="image"
+          height={128}
+          width={128}
+        />
+      </div>
+    ),
     enableSorting: false,
     enableHiding: false,
   },
   {
-    accessorKey: "createdAt",
+    accessorKey: "title",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Дата создания" />
+      <DataTableColumnHeader column={column} title="Название" />
     ),
     cell: ({ row }) => {
-      const createdAt: Date = row.getValue("createdAt");
+      return <div className="w-36">{row.getValue("title")}</div>;
+    },
+  },
+  {
+    accessorKey: "genre",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Жанр" />
+    ),
+    cell: ({ row }) => {
+      return <Badge variant={"secondary"}>{row.getValue("genre")}</Badge>;
+    },
+  },
+  {
+    accessorKey: "price",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Цена" />
+    ),
+    cell: ({ row }) => {
       return (
-        <span className="w-32 font-medium">{createdAt.toDateString()}</span>
+        <div className="flex flex-row items-center">
+          {row.getValue("price")} RUB
+        </div>
       );
+    },
+    filterFn: (row, id, value) => {
+      return value.includes(row.getValue(id));
     },
   },
   {
@@ -90,31 +119,32 @@ export const columns: ColumnDef<RouterOutputs["order"]["all"][number]>[] = [
     },
   },
   {
-    accessorKey: "totalPrice",
+    accessorKey: "author",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Общая цена" />
+      <DataTableColumnHeader column={column} title="Автор" />
     ),
     cell: ({ row }) => {
-      return (
-        <span className="max-w-[100px] truncate font-medium">
-          {row.getValue("totalPrice")} RUB
-        </span>
-      );
+      return <span>{row.getValue("author")}</span>;
     },
   },
   {
-    accessorKey: "orderedBooks",
+    accessorKey: "amount",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Книги" />
+      <DataTableColumnHeader column={column} title="Кол-во" />
     ),
     cell: ({ row }) => {
-      const orderedBooks: orderedBook[] = row.getValue("orderedBooks");
+      return <div>{row.getValue("amount")} шт.</div>;
+    },
+  },
+  {
+    accessorKey: "createdAt",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Дата создания" />
+    ),
+    cell: ({ row }) => {
+      const createdAt: Date = row.getValue("createdAt");
       return (
-        <div className="space-x-1">
-          {orderedBooks.map((orderedBook) => (
-            <span key={orderedBook.id}>{orderedBook?.book?.title}</span>
-          ))}
-        </div>
+        <span className="w-32 font-medium">{createdAt.toDateString()}</span>
       );
     },
   },

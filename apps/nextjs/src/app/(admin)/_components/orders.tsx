@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import {
   ChevronLeft,
   ChevronRight,
@@ -11,7 +11,6 @@ import {
 } from "lucide-react";
 
 import type { RouterOutputs } from "@acme/api";
-import { Badge } from "@acme/ui/badge";
 import { Button } from "@acme/ui/button";
 import {
   Card,
@@ -34,69 +33,18 @@ import {
   PaginationItem,
 } from "@acme/ui/pagination";
 import { Separator } from "@acme/ui/separator";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@acme/ui/table";
 
-export function OrdersTable({
-  orders,
-}: {
-  orders: RouterOutputs["order"]["all"];
-}) {
-  return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Клиент</TableHead>
-          <TableHead className="hidden sm:table-cell">Дата создания</TableHead>
-          <TableHead className="hidden sm:table-cell">Статус</TableHead>
-          <TableHead className="hidden md:table-cell">Общая сумма</TableHead>
-          <TableHead className="text-right">Заказанные книги</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {orders.map((order) => (
-          <TableRow key={order.id}>
-            <TableCell>
-              <div className="font-medium">{order.user.name}</div>
-              <div className="hidden text-sm text-muted-foreground md:inline">
-                {order.user.email}
-              </div>
-            </TableCell>
-            <TableCell className="hidden sm:table-cell">
-              {order.createdAt.toLocaleDateString()}
-            </TableCell>
-            <TableCell className="hidden sm:table-cell">
-              <Badge className="text-xs" variant="secondary">
-                {order.status}
-              </Badge>
-            </TableCell>
-            <TableCell className="hidden md:table-cell">
-              {order.totalPrice} RUB
-            </TableCell>
-            <TableCell className="flex items-center justify-end gap-1">
-              {order.orderedBooks.map((orderedBook) => (
-                <span key={orderedBook.id}>{orderedBook?.book?.title}</span>
-              ))}
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  );
-}
+import { api } from "~/trpc/react";
 
 export function OrderCard({
-  orders,
+  data,
 }: {
-  orders: RouterOutputs["order"]["all"];
+  data: Promise<RouterOutputs["order"]["all"]>;
 }) {
+  const initialData = use(data);
+  const { data: orders } = api.order.all.useQuery(undefined, { initialData });
   const [currentOrder, setCurrentOrder] = useState(orders[0]);
+
   return (
     <Card className="overflow-hidden">
       <CardHeader className="flex flex-row items-start bg-muted/50">
@@ -175,8 +123,8 @@ export function OrderCard({
           <div className="grid gap-3">
             <div className="font-semibold">Информация о доставке</div>
             <address className="grid gap-0.5 not-italic text-muted-foreground">
-              <span>Тип: {currentOrder!.delivery.type}</span>
-              <span>Адрес: {currentOrder?.delivery.location}</span>
+              <span>Тип: {currentOrder?.delivery?.type}</span>
+              <span>Адрес: {currentOrder?.delivery?.location}</span>
             </address>
           </div>
         </div>

@@ -5,14 +5,13 @@ import { Cross2Icon } from "@radix-ui/react-icons";
 
 import type { RouterOutputs } from "@acme/api";
 import { Button } from "@acme/ui/button";
+import { CardDescription, CardTitle } from "@acme/ui/card";
 
 import { DeleteBooksDialog } from "../dialogs";
-import { statuses } from "./data";
-import { DataTableFacetedFilter } from "./faceted-filter";
 import { DataTableViewOptions } from "./view-options";
 
 interface DataTableToolbarProps {
-  table: Table<RouterOutputs["order"]["all"][number]>;
+  table: Table<RouterOutputs["book"]["all"][number]>;
 }
 
 export function DataTableToolbar({ table }: DataTableToolbarProps) {
@@ -29,14 +28,10 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           }
           className="h-8 w-[150px] lg:w-[250px]"
         /> */}
-        {table.getColumn("status") && (
-          <DataTableFacetedFilter
-            column={table.getColumn("status")}
-            title="Status"
-            options={statuses}
-          />
-        )}
-
+        <div className="flex flex-col gap-y-1">
+          <CardTitle>Товары</CardTitle>
+          <CardDescription>Товары из вашего магазина</CardDescription>
+        </div>
         {isFiltered && (
           <Button
             aria-label="Reset Filters"

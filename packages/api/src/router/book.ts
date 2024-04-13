@@ -71,4 +71,16 @@ export const bookRouter = {
       .from(schema.book);
     return { min: minimum[0]?.values ?? 0, max: maximum[0]?.values ?? 0 };
   }),
+  filterData: publicProcedure.query(async ({ ctx }) => {
+    const minimum = await ctx.db
+      .select({ values: min(schema.book.price) })
+      .from(schema.book);
+    const maximum = await ctx.db
+      .select({ values: max(schema.book.price) })
+      .from(schema.book);
+    const authors = await ctx.db
+      .select({ values: schema.book.author })
+      .from(schema.book);
+    return { minimum, maximum, authors };
+  }),
 } satisfies TRPCRouterRecord;

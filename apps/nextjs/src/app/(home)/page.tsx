@@ -13,7 +13,7 @@ export default async function Home() {
   return (
     <div className="flex flex-col">
       <Header />
-      <main className="grid flex-1 gap-4 overflow-auto p-4 md:grid-cols-4 lg:grid-cols-5">
+      <main className="grid flex-1 gap-4 overflow-auto p-2 sm:p-4 md:grid-cols-4 lg:grid-cols-5">
         <FilterSidebar minAndMax={minAndMax} />
         <div className="relative flex h-full min-h-[50vh] flex-col gap-y-4 rounded-xl p-4 md:col-span-3 lg:col-span-4">
           <Typography variant={"h1"} className="inline-flex justify-between">
