@@ -2,7 +2,6 @@ import type { TRPCRouterRecord } from "@trpc/server";
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
 
-import type { review } from "@acme/db";
 import { and, eq, schema } from "@acme/db";
 import {
   createReviewSchema,
@@ -15,7 +14,7 @@ import { protectedProcedure, publicProcedure } from "../trpc";
 export const reviewRouter = {
   byBookId: publicProcedure
     .input(z.object({ id: z.number() }))
-    .query(({ ctx, input }): Promise<review[] | undefined> => {
+    .query(({ ctx, input }) => {
       return ctx.db
         .select()
         .from(schema.review)

@@ -1,6 +1,9 @@
 import { defineConfig } from "cypress";
 
-import { BASE_URL } from "../../constants";
+const BASE_URL =
+  process.env.NODE_ENV == "production"
+    ? `https://bookconer.site`
+    : `http://localhost:${process.env.PORT ?? 3000}`;
 
 export default defineConfig({
   e2e: {

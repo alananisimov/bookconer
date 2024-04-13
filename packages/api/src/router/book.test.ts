@@ -1,17 +1,14 @@
-import { expectTypeOf, test } from "vitest";
-
-import type { book } from "@acme/db";
+import { expect, test } from "vitest";
 
 import { createCaller } from "..";
-import dbMock from "../../__mocks__/drizzle.mock";
 import { session } from "../../__mocks__/session.mock";
 import { createInnerTRPCContext } from "../trpc";
 
 test("get books types", async () => {
   const ctx = createInnerTRPCContext({ session });
-  const caller = createCaller({ ...ctx, db: dbMock });
+  const caller = createCaller({ ...ctx });
 
-  const books = await caller.book.all();
+  const review = await caller.review.byBookId({ id: 16 });
 
-  expectTypeOf(books).toMatchTypeOf<book[]>();
+  expect(review).toStrictEqual([]);
 });

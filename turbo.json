@@ -21,6 +21,9 @@
       "persistent": true,
       "cache": false
     },
+    "test": {
+      "dotEnv": [".env"]
+    },
     "format": {
       "outputs": ["node_modules/.cache/.prettiercache"],
       "outputMode": "new-only"

@@ -7,7 +7,7 @@
     "./*": "./src/*"
   },
   "scripts": {
-    "e2e": "cypress open",
+    "test": "cypress run",
     "clean": "rm -rf .turbo node_modules",
     "format": "prettier --check . --ignore-path ../../.gitignore",
     "typecheck": "tsc"

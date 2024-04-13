@@ -19,8 +19,9 @@
     "lint:ws": "pnpm dlx sherif@latest",
     "postinstall": "pnpm lint:ws",
     "typecheck": "turbo typecheck",
-    "test:e2e": "pnpm -F nextjs-e2e e2e",
-    "test:unit": "vitest"
+    "test:e2e": "pnpm -F nextjs-e2e test",
+    "test:unit": "vitest run",
+    "test": "turbo test --parallel"
   },
   "devDependencies": {
     "@acme/prettier-config": "workspace:*",
