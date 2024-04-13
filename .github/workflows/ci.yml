@@ -72,7 +72,7 @@ jobs:
         with:
           runTests: false
         
-      - run: yarn cypress info
+      - run: pnpm cypress info
       - run: node --version
       - run: node -p 'os.cpus()'
       - run: pnpm test:unit
