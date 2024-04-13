@@ -9,7 +9,7 @@ export default function Header() {
   const path = usePathname();
   return (
     <header className="sticky top-0 z-10 flex h-[53px] items-center gap-1 border-b bg-background px-4">
-      <h1 className="text-xl font-semibold">Главная</h1>
+      <h2 className="text-xl font-semibold">Главная</h2>
 
       <Button
         variant="outline"

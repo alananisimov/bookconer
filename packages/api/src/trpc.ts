@@ -13,6 +13,14 @@ import { ZodError } from "zod";
 import type { Session } from "@acme/auth";
 import { db } from "@acme/db";
 
+export const createInnerTRPCContext = (opts: { session: Session | null }) => {
+  const session = opts.session;
+  return {
+    session,
+    db,
+  };
+};
+
 /**
  * 1. CONTEXT
  *

@@ -1,0 +1,10 @@
+{
+  "extends": "@acme/tsconfig/internal-package.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "tsBuildInfoFile": "node_modules/.cache/tsbuildinfo.json",
+    "types": ["cypress", "node"]
+  },
+  "include": ["src", "cypress.config.ts"],
+  "exclude": ["node_modules"]
+}

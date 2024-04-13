@@ -82,7 +82,7 @@ export const orderRouter = {
     return orders.map((order) => ({
       ...order,
       totalPrice: order.orderedBooks.reduce((acc, orderedBook) => {
-        return acc + orderedBook.book?.price * orderedBook.bookQuantity;
+        return acc + orderedBook.book.price * orderedBook.bookQuantity;
       }, 0),
     }));
   }),

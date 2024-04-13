@@ -18,7 +18,9 @@
     "lint:fix": "turbo lint --continue -- --fix --cache --cache-location node_modules/.cache/.eslintcache",
     "lint:ws": "pnpm dlx sherif@latest",
     "postinstall": "pnpm lint:ws",
-    "typecheck": "turbo typecheck"
+    "typecheck": "turbo typecheck",
+    "test:e2e": "pnpm -F nextjs-e2e e2e",
+    "test:unit": "vitest"
   },
   "devDependencies": {
     "@acme/prettier-config": "workspace:*",
