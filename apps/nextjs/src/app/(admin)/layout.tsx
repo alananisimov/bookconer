@@ -15,9 +15,9 @@ import { redirect } from "next/navigation";
 import { auth } from "@acme/auth";
 import { TooltipProvider } from "@acme/ui/tooltip";
 
+import { Aside } from "~/components/admin-layout/aside";
+import { Header } from "~/components/admin-layout/header";
 import { EdgeStoreProvider } from "~/lib/edgestore";
-import { Aside } from "./_components/aside";
-import { Header } from "./_components/header";
 
 export const metadata: Metadata = {
   metadataBase: new URL(

@@ -2,7 +2,7 @@ import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 import { Alert, AlertDescription, AlertTitle } from "@acme/ui/alert";
 
-import { EditPage } from "~/app/(admin)/_components/edit-product";
+import { EditPage } from "~/components/edit-product-page";
 import { api } from "~/trpc/server";
 
 export const runtime = "edge";

@@ -81,6 +81,6 @@ export const bookRouter = {
     const authors = await ctx.db
       .select({ values: schema.book.author })
       .from(schema.book);
-    return { minimum, maximum, authors };
+    return { minimum: minimum[0], maximum: maximum[0], authors };
   }),
 } satisfies TRPCRouterRecord;

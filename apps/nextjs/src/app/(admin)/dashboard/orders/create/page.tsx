@@ -1,4 +1,4 @@
-import { CreateOrderPage } from "~/app/(admin)/_components/create-order";
+import { CreateOrderPage } from "~/components/create-order-page";
 import { api } from "~/trpc/server";
 
 export const runtime = "edge";

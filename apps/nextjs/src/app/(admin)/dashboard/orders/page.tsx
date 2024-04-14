@@ -11,10 +11,10 @@ import {
 } from "@acme/ui/card";
 import { Progress } from "@acme/ui/progress";
 
+import { OrderCard } from "~/components/orders-page/order-card";
+import { OrdersTable } from "~/components/orders-page/orders-table";
+import { columns } from "~/components/orders-page/orders-table/columns";
 import { api } from "~/trpc/server";
-import { OrderCard } from "../../_components/orders";
-import { columns } from "../../_components/orders-table/columns";
-import { OrdersTable } from "../../_components/orders-table/data-table";
 
 export const runtime = "edge";
 

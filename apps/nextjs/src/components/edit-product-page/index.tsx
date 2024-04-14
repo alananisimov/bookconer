@@ -10,6 +10,7 @@ import { ChevronLeft, Loader } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import type { RouterOutputs } from "@acme/api";
+import type { book } from "@acme/db";
 import { cn } from "@acme/ui";
 import { Badge } from "@acme/ui/badge";
 import { Button } from "@acme/ui/button";
@@ -38,41 +39,53 @@ import {
 } from "@acme/ui/select";
 import { Textarea } from "@acme/ui/textarea";
 import { toast } from "@acme/ui/toast";
-import { createBookSchema } from "@acme/validators";
+import { updateBookSchema } from "@acme/validators";
 
 import { api } from "~/trpc/react";
+import { SingleImageDropzoneUsage } from "../dropzone";
 import { CreateNewAuthorDialog, CreateNewGenreDialog } from "./dialogs";
-import { SingleImageDropzoneUsage } from "./dropzone";
 
-interface ProductEditFormProps {
+interface EditPageProps {
   authors: RouterOutputs["book"]["allAuthors"];
   genres: RouterOutputs["book"]["allGenres"];
+  book: book;
 }
 
-export function EditProduct({ authors, genres }: ProductEditFormProps) {
-  const form = useForm<z.infer<typeof createBookSchema>>({
-    resolver: zodResolver(createBookSchema),
+export function EditPage({ authors, genres, book }: EditPageProps) {
+  const form = useForm<z.infer<typeof updateBookSchema>>({
+    resolver: zodResolver(updateBookSchema),
+    defaultValues: {
+      id: book.id,
+      title: book.title,
+      description: book.description,
+      amount: book.amount,
+      author: book.author,
+      genre: book.genre,
+      imageLink: book.imageLink,
+      price: book.price,
+      status: book.status,
+    },
   });
   const utils = api.useUtils();
   const router = useRouter();
-  const createBook = api.book.create.useMutation({
+  const updateBook = api.book.update.useMutation({
     onSuccess: async () => {
-      form.reset();
+      toast.success("Книга успешно обновлена!");
       router.replace("/dashboard/products");
-      toast.success("Книга успешно создана!");
-      await utils.book.invalidate();
+      await utils.book.all.invalidate();
     },
     onError: (err) => {
       toast.error(
         err?.data?.code === "UNAUTHORIZED"
           ? "You must be an admin in to create a book"
-          : "Не удалось создать книгу",
+          : "Не удалось обновить книгу",
         { description: err.message },
       );
     },
   });
-  function onSubmit(values: z.infer<typeof createBookSchema>) {
-    createBook.mutate(values);
+  function onSubmit(values: z.infer<typeof updateBookSchema>) {
+    console.log(values);
+    updateBook.mutate(values);
   }
 
   const [allAuthors, setAllAuthors] = useState(authors);
@@ -85,12 +98,15 @@ export function EditProduct({ authors, genres }: ProductEditFormProps) {
   const addGenreToList = (newGenre: string) => {
     setAllGenres([...allGenres, { genre: newGenre }]);
   };
-  const [imageLoad, setImageLoad] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="max-w-full space-y-8"
+      >
         <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
-          <div className="mx-auto grid max-w-[59rem] flex-1 auto-rows-max gap-4">
+          <div className="mx-auto grid flex-1 auto-rows-max gap-4 sm:max-w-[59rem]">
             <div className="flex items-center gap-4">
               <Link href={"/dashboard/products"}>
                 <Button
@@ -103,8 +119,8 @@ export function EditProduct({ authors, genres }: ProductEditFormProps) {
                   <span className="sr-only">Back</span>
                 </Button>
               </Link>
-              <h1 className="flex-1 shrink-0 whitespace-nowrap text-xl font-semibold tracking-tight sm:grow-0">
-                Новая книга
+              <h1 className="flex-1 shrink-0 whitespace-break-spaces text-xl font-semibold tracking-tight md:grow-0 md:whitespace-nowrap">
+                {book.title}
               </h1>
               <Badge variant="outline" className="ml-auto sm:ml-0">
                 Книга
@@ -116,7 +132,7 @@ export function EditProduct({ authors, genres }: ProductEditFormProps) {
                   </Button>
                 </Link>
                 <Button size="sm" type="submit">
-                  Добавить книгу
+                  Обновить книгу
                 </Button>
               </div>
             </div>
@@ -255,7 +271,7 @@ export function EditProduct({ authors, genres }: ProductEditFormProps) {
                   </CardContent>
                 </Card>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  <Card>
+                  <Card className="">
                     <CardHeader>
                       <CardTitle>Ограничения</CardTitle>
                     </CardHeader>
@@ -283,7 +299,7 @@ export function EditProduct({ authors, genres }: ProductEditFormProps) {
                       </div>
                     </CardContent>
                   </Card>
-                  <Card>
+                  <Card className="">
                     <CardHeader>
                       <CardTitle>Цена</CardTitle>
                     </CardHeader>
@@ -366,10 +382,10 @@ export function EditProduct({ authors, genres }: ProductEditFormProps) {
                     <CardDescription>Добавьте изображения</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid gap-4">
+                    <div className="grid gap-2">
                       <div className="relative flex rounded-md bg-muted p-4">
                         <div className="absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 transform">
-                          {imageLoad && (
+                          {imageLoaded && (
                             <Loader className="size-5 animate-spin" />
                           )}
                         </div>
@@ -377,16 +393,14 @@ export function EditProduct({ authors, genres }: ProductEditFormProps) {
                           alt="Product image"
                           className={cn(
                             "aspect-square h-full w-full rounded-md object-contain",
-                            imageLoad && " brightness-50",
+                            imageLoaded && " brightness-50",
                           )}
                           height="300"
-                          src={
-                            form.getValues("imageLink") || "/placeholder.svg"
-                          }
+                          src={form.getValues("imageLink")}
                           width="300"
                         />
                       </div>
-                      <div className=" w-full">
+                      <div className="w-full">
                         <FormField
                           control={form.control}
                           name="imageLink"
@@ -394,7 +408,8 @@ export function EditProduct({ authors, genres }: ProductEditFormProps) {
                             <FormItem>
                               <SingleImageDropzoneUsage
                                 save={field.onChange}
-                                setImageLoaded={setImageLoad}
+                                setImageLoaded={setImageLoaded}
+                                oldUrl={field.value}
                               />
                             </FormItem>
                           )}

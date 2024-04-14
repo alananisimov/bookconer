@@ -4,9 +4,9 @@ import { File, PlusCircle } from "lucide-react";
 import { Button } from "@acme/ui/button";
 import { Card, CardContent } from "@acme/ui/card";
 
+import { ProductsTable } from "~/components/products-page/products-table";
+import { columns } from "~/components/products-page/products-table/columns";
 import { api } from "~/trpc/server";
-import { columns } from "../../_components/books-table/columns";
-import { ProductsTable } from "../../_components/books-table/data-table";
 
 export default async function Dashboard() {
   const products = api.book.all();

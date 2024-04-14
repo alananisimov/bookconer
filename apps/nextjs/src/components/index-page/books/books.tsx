@@ -60,7 +60,7 @@ export function BookCard(props: {
       <CardContent className="flex h-full flex-col justify-between p-4">
         <div>
           <h2 className="line-clamp-2 text-xl font-bold">{props.book.title}</h2>
-          <h3 className="text-sm text-gray-500 sm:text-base">
+          <h3 className="text-sm text-muted-foreground sm:text-base">
             от {props.book.author}
           </h3>
         </div>

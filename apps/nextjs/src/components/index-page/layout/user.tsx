@@ -23,7 +23,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@acme/ui/tabs";
 
 import { roles } from "~/constants";
 
-function SignInDialog({ trigger }: { trigger: ReactNode }) {
+export function SignInDialog({ trigger }: { trigger: ReactNode }) {
   const [signInClicked, setSignInClicked] = useState(false);
   return (
     <Dialog>
