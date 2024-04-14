@@ -13,7 +13,7 @@ function PostCard(props: { book: RouterOutputs["book"]["all"][number] }) {
         <Link
           asChild
           href={{
-            pathname: "/post/[id]",
+            pathname: "/book/[id]",
             params: { id: props.book.id },
           }}
         >

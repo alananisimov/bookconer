@@ -2,6 +2,7 @@
 
 import type { Table } from "@tanstack/react-table";
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { File } from "lucide-react";
 
 import type { RouterOutputs } from "@acme/api";
 import { Button } from "@acme/ui/button";
@@ -44,12 +45,19 @@ export function DataTableToolbar({ table }: DataTableToolbarProps) {
           </Button>
         )}
       </div>
-      <div className="inline-flex gap-x-4">
+      <div className="inline-flex gap-x-2">
         {selectedRows.length > 0 && (
           <DeleteBooksDialog
             bookIds={selectedRows.map((row) => row.original.id)}
           />
         )}
+
+        <Button size="sm" variant="outline" className=" gap-1">
+          <File className="h-4 w-4" />
+          <span className="sr-only sm:not-sr-only sm:whitespace-nowrap">
+            Экспорт
+          </span>
+        </Button>
         <DataTableViewOptions table={table} />
       </div>
     </div>

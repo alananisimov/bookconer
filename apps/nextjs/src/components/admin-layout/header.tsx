@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -59,9 +60,10 @@ function getBreadcrumbs(pathname: string): Breadcrumb[] {
 export function Header({ session }: { session: Session | null }) {
   const path = usePathname();
   const breadcrumbs = getBreadcrumbs(path);
+  const [open, setOpen] = useState(false);
   return (
     <header className="sticky top-0 z-30 flex h-14 items-center gap-4 border-b bg-background px-4 sm:static sm:h-auto sm:border-0 sm:bg-transparent sm:px-6">
-      <Sheet>
+      <Sheet onOpenChange={setOpen} open={open}>
         <SheetTrigger asChild>
           <Button size="icon" variant="outline" className="sm:hidden">
             <PanelLeft className="h-5 w-5" />
@@ -79,6 +81,7 @@ export function Header({ session }: { session: Session | null }) {
             </Link>
             <Link
               href="/dashboard"
+              onClick={() => setOpen(false)}
               className={cn(
                 "flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground",
                 path === "/dashboard"
@@ -90,6 +93,7 @@ export function Header({ session }: { session: Session | null }) {
               Главная
             </Link>
             <Link
+              onClick={() => setOpen(false)}
               href="/dashboard/orders"
               className={cn(
                 "flex items-center gap-4 px-2.5 text-foreground",
@@ -102,6 +106,7 @@ export function Header({ session }: { session: Session | null }) {
               Заказы
             </Link>
             <Link
+              onClick={() => setOpen(false)}
               href="/dashboard/products"
               className={cn(
                 "flex items-center gap-4 px-2.5 text-foreground",
@@ -114,6 +119,7 @@ export function Header({ session }: { session: Session | null }) {
               Товары{" "}
             </Link>
             <Link
+              onClick={() => setOpen(false)}
               href="#"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
@@ -121,6 +127,7 @@ export function Header({ session }: { session: Session | null }) {
               Заказчики
             </Link>
             <Link
+              onClick={() => setOpen(false)}
               href="#"
               className="flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground"
             >
@@ -178,7 +185,7 @@ export function Header({ session }: { session: Session | null }) {
           <DropdownMenuItem>Настройки</DropdownMenuItem>
           <DropdownMenuItem>Нужна помощь?</DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => signOut()}>Logout</DropdownMenuItem>
+          <DropdownMenuItem onClick={() => signOut()}>Выйти</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </header>

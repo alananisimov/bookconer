@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChevronLeft, Loader } from "lucide-react";
+import { ChevronLeft, Loader, Plus } from "lucide-react";
 import { useForm } from "react-hook-form";
 
 import type { RouterOutputs } from "@acme/api";
@@ -86,6 +86,8 @@ export function CreateProduct({ authors, genres }: ProductEditFormProps) {
     setAllGenres([...allGenres, { genre: newGenre }]);
   };
   const [imageLoad, setImageLoad] = useState(false);
+  const [authorOpen, setAuthorOpen] = useState(false);
+  const [genreOpen, setGenreOpen] = useState(false);
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -203,7 +205,21 @@ export function CreateProduct({ authors, genres }: ProductEditFormProps) {
                                       {genre.genre}
                                     </SelectItem>
                                   ))}
+                                  <button
+                                    onClick={() => setGenreOpen((v) => !v)}
+                                    type="button"
+                                    className="relative flex w-full cursor-pointer select-none flex-row items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                                  >
+                                    <div className="flex items-start gap-1 text-muted-foreground">
+                                      <Plus className="size-5" />
+                                      <div className="grid gap-0.5">
+                                        <p>Добавить свой</p>
+                                      </div>
+                                    </div>
+                                  </button>
                                   <CreateNewGenreDialog
+                                    open={genreOpen}
+                                    setOpen={setGenreOpen}
                                     action={addGenreToList}
                                   />
                                 </SelectContent>
@@ -240,7 +256,21 @@ export function CreateProduct({ authors, genres }: ProductEditFormProps) {
                                     </SelectItem>
                                   ))}
 
+                                  <button
+                                    onClick={() => setAuthorOpen((v) => !v)}
+                                    type="button"
+                                    className="relative flex w-full cursor-pointer select-none flex-row items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+                                  >
+                                    <div className="flex items-start gap-1 text-muted-foreground">
+                                      <Plus className="size-5" />
+                                      <div className="grid gap-0.5">
+                                        <p>Добавить свой</p>
+                                      </div>
+                                    </div>
+                                  </button>
                                   <CreateNewAuthorDialog
+                                    open={authorOpen}
+                                    setOpen={setAuthorOpen}
                                     action={addAuthorToList}
                                   />
                                 </SelectContent>

@@ -11,6 +11,8 @@ import { TRPCReactProvider } from "~/trpc/react";
 
 import "~/app/globals.css";
 
+import Script from "next/script";
+
 import { TooltipProvider } from "@acme/ui/tooltip";
 
 import Aside from "~/components/index-page/layout/aside";
@@ -42,6 +44,12 @@ export const viewport: Viewport = {
 export default function RootLayout(props: { children: React.ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <Script
+        defer
+        src="https://bookconer-analytics.vercel.app/script.js"
+        data-website-id="cec54e79-2f43-4821-b0bf-40f9550325dd"
+      />
+
       <body
         className={cn(
           "min-h-screen bg-background font-sans text-foreground antialiased",
