@@ -5,7 +5,13 @@
     "node": ">=20.11.1"
   },
   "packageManager": "pnpm@8.15.5",
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "tooling/*"
+  ],
   "scripts": {
+    "start": "pnpm -F nextjs start",
     "build": "turbo build",
     "clean": "git clean -xdf node_modules",
     "clean:workspaces": "turbo clean",

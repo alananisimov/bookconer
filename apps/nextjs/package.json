@@ -8,6 +8,7 @@
     "./*": "./src/*"
   },
   "scripts": {
+    "start:prod": "pnpm with-env next",
     "build": "pnpm with-env next build",
     "clean": "git clean -xdf .next .turbo node_modules",
     "dev": "pnpm with-env next dev",
